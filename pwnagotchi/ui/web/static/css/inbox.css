@@ -80,15 +80,12 @@
    Inbox List
    ============================================ */
 
-.inbox,
-.peers {
+.inbox{
   list-style: none;
   padding: 0;
   margin: 0 0 1rem 0;
 }
 
-.inbox-item,
-.peer,
 .message {
   display: flex;
   padding: 1rem;
@@ -99,22 +96,16 @@
   cursor: pointer;
 }
 
-.inbox-item:first-child,
-.peer:first-child,
 .message:first-child {
   border-top: 1px solid #333;
 }
 
-.inbox-item:hover,
-.peer:hover,
 .message:hover {
   background-color: #252525;
   border-left: 3px solid var(--accent);
   padding-left: calc(1rem - 3px);
 }
 
-.inbox-item a,
-.peer a,
 .message a {
   display: block;
   color: inherit;
@@ -125,14 +116,10 @@
   overflow-wrap: break-word;
 }
 
-.inbox-item a:hover,
-.peer a:hover,
 .message a:hover {
   text-decoration: none;
 }
 
-.inbox-item h2,
-.peer h2,
 .message h2 {
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
@@ -141,8 +128,6 @@
   overflow-wrap: break-word;
 }
 
-.inbox-item p,
-.peer p,
 .message p {
   margin: 0;
   font-size: 0.9rem;
@@ -157,72 +142,4 @@
   background-color: rgba(var(--accent-r), var(--accent-g), var(--accent-b), 0.15);
   border-left: 3px solid var(--accent);
   padding-left: calc(1rem - 3px);
-}
-
-/* ============================================
-   Search & Filter
-   ============================================ */
-
-.search-box {
-  margin-bottom: 1rem;
-  padding: 0.75rem;
-  background-color: var(--card-bg);
-  border: 1px solid #333;
-  border-radius: 6px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.search-box input {
-  width: 100%;
-  margin: 0;
-  background-color: #0a0a0a;
-}
-
-/* ============================================
-   Pagination
-   ============================================ */
-
-.pagination {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
-  gap: 0.25rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.pagination .page-item {
-  display: inline-block;
-}
-
-.pagination .page-link {
-  display: block;
-  padding: 0.5rem 0.75rem;
-  background-color: var(--card-bg);
-  border: 1px solid #333;
-  color: var(--text-main);
-  transition: var(--transition);
-  border-radius: 4px;
-  font-weight: 400;
-}
-
-.pagination .page-link:hover {
-  background-color: var(--accent);
-  color: #000;
-  text-decoration: none;
-  border-color: var(--accent);
-}
-
-.pagination .page-item.active .page-link {
-  background-color: var(--accent);
-  color: #000;
-  border-color: var(--accent);
-}
-
-.pagination .page-item.disabled .page-link {
-  opacity: 0.4;
-  cursor: not-allowed;
 }

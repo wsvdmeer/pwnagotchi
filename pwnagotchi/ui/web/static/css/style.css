@@ -1115,6 +1115,70 @@ code {
 }
 
 /* ============================================
+   Search & Pagination
+   ============================================ */
+
+.search-box {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: var(--card-bg);
+  border: 1px solid #333;
+  border-radius: 6px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.search-box input {
+  width: 100%;
+  margin: 0;
+  background-color: #0a0a0a;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  gap: 0.25rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pagination .page-item {
+  display: inline-block;
+}
+
+.pagination .page-link {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--card-bg);
+  border: 1px solid #333;
+  color: var(--text-main);
+  transition: var(--transition);
+  border-radius: 4px;
+  font-weight: 400;
+}
+
+.pagination .page-link:hover {
+  background-color: var(--accent);
+  color: #000;
+  text-decoration: none;
+  border-color: var(--accent);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+
+.pagination .page-item.disabled .page-link {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ============================================
    Utility Classes
    ============================================ */
 

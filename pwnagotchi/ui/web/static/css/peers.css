@@ -1,0 +1,60 @@
+/* ============================================
+   Peers Styling
+   ============================================ */
+
+.peers {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+
+.peer {
+  display: flex;
+  padding: 1rem;
+  background-color: var(--card-bg);
+  border-bottom: 1px solid #333;
+  border-radius: 8px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.peer:first-child {
+  border-top: 1px solid #333;
+}
+
+.peer:hover {
+  background-color: #252525;
+  border-left: 3px solid var(--accent);
+  padding-left: calc(1rem - 3px);
+}
+
+.peer a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  flex: 1;
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.peer a:hover {
+  text-decoration: none;
+}
+
+.peer h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: var(--accent);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.peer p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
