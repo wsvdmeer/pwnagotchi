@@ -10,6 +10,93 @@ import glob
 from flask import render_template_string
 
 
+INDEX_TEMPLATE = """
+{% extends "base.html" %}
+{% set active_page = "plugins" %}
+{% block title %}Auto Backup{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        .ab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .ab-header > div { flex: 1; min-width: 0; }
+        .ab-header h2, .ab-header p { margin: 0; }
+        .ab-header .btn { flex-shrink: 0; width: auto; min-width: 0; }
+        .ab-footer form { margin: 0; width: 100%; }
+        .ab-footer .btn { width: 100%; }
+        .ab-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .ab-row:last-child { border-bottom: none; }
+        .ab-row .k { color: var(--text-muted); }
+        .ab-row .v { color: var(--text-main); text-align: right; word-break: break-word; }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="ab-header">
+        <div>
+            <h2>Auto Backup</h2>
+            <p>Scheduled &amp; manual backups of your pwnagotchi</p>
+        </div>
+        <a href="/plugins" class="btn secondary">Plugins</a>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Status</div>
+        <div class="card-body">
+            <p>{{ 'Backup in progress...' if in_progress else 'Ready' }}</p>
+        </div>
+        <div class="card-footer ab-footer">
+            <form method="POST" action="{{ action_path }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn primary" {{ 'disabled' if in_progress else '' }}>Start manual backup</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Configuration</div>
+        <div class="card-body">
+            <div class="ab-row"><span class="k">Backup location</span><span class="v">{{ backup_location }}</span></div>
+            <div class="ab-row"><span class="k">Interval</span><span class="v">{{ interval_minutes }} min</span></div>
+            <div class="ab-row"><span class="k">Max backups</span><span class="v">{{ max_backups }}</span></div>
+            <div class="ab-row"><span class="k">Include paths</span><span class="v">{{ include }}</span></div>
+        </div>
+    </div>
+{% endblock %}
+"""
+
+
+RESULT_TEMPLATE = """
+{% extends "base.html" %}
+{% set active_page = "plugins" %}
+{% block title %}Auto Backup{% endblock %}
+
+{% block content %}
+    <div class="card" style="max-width: 600px; margin: 2rem auto; text-align: center;">
+        <div class="card-header" style="justify-content: center;">Auto Backup</div>
+        <div class="card-body"><p>{{ status }}</p></div>
+        <div class="card-footer" style="justify-content: center;">
+            <a href="/plugins/auto_backup/" class="btn secondary">Back</a>
+        </div>
+    </div>
+{% endblock %}
+"""
+
+
 class AutoBackup(plugins.Plugin):
     __author__ = "WPA2"
     __version__ = "2.3"
@@ -344,54 +431,20 @@ class AutoBackup(plugins.Plugin):
                     if request.path.endswith("/backup")
                     else "%s/backup" % request.path
                 )
-                ret = '<html><head><title>AUTO Backup</title><meta name="csrf_token" content="{{ csrf_token() }}"></head><body>'
-                ret += "<h1>AUTO Backup</h1>"
-                ret += "<p>Status: "
-                if self.backup_in_progress:
-                    ret += "<b>Backup in progress...</b>"
-                else:
-                    ret += "<b>Ready</b>"
-                ret += "</p>"
-                ret += '<form method="POST" action="%s">' % action_path
-                ret += '<input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}">'
-                ret += '<input type="submit" value="Start Manual Backup" class="btn primary">'
-                ret += "</form>"
-                ret += "<hr>"
-                ret += "<h2>Configuration</h2>"
-                ret += '<table border="1" cellpadding="5">'
-                ret += (
-                    "<tr><td><b>Backup Location:</b></td><td>"
-                    + self.options.get("backup_location", "Not set")
-                    + "</td></tr>"
+                return render_template_string(
+                    INDEX_TEMPLATE,
+                    in_progress=self.backup_in_progress,
+                    action_path=action_path,
+                    backup_location=self.options.get("backup_location", "Not set"),
+                    interval_minutes=self.interval_seconds // 60,
+                    max_backups=self.max_backups,
+                    include=", ".join(self.include) if self.include else "None",
                 )
-                ret += (
-                    "<tr><td><b>Interval:</b></td><td>"
-                    + str(self.interval_seconds // 60)
-                    + " minutes</b></td></tr>"
-                )
-                ret += (
-                    "<tr><td><b>Max Backups:</b></td><td>"
-                    + str(self.max_backups)
-                    + "</td></tr>"
-                )
-                ret += (
-                    "<tr><td><b>Include Paths:</b></td><td>"
-                    + (", ".join(self.include) if self.include else "None")
-                    + "</td></tr>"
-                )
-                ret += "</table>"
-                ret += "</body></html>"
-                return render_template_string(ret)
 
         elif request.method == "POST":
             if path == "backup" or path == "/backup":
                 result = self.manual_backup(self._agent)
-                ret = '<html><head><title>AUTO Backup</title><meta name="csrf_token" content="{{ csrf_token() }}"></head><body>'
-                ret += "<h1>AUTO Backup</h1>"
-                ret += "<p><b>" + result["status"] + "</b></p>"
-                ret += '<a href="/plugins/auto_backup/">Back</a>'
-                ret += "</body></html>"
-                return render_template_string(ret)
+                return render_template_string(RESULT_TEMPLATE, status=result["status"])
 
         return "Not found"
 
