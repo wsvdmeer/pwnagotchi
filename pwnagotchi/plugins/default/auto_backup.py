@@ -18,18 +18,6 @@ INDEX_TEMPLATE = """
 {% block styles %}
     {{ super() }}
     <style>
-        .ab-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            padding: 1.5rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .ab-header > div { flex: 1; min-width: 0; }
-        .ab-header h2, .ab-header p { margin: 0; }
-        .ab-header .btn { flex-shrink: 0; width: auto; min-width: 0; }
         .ab-footer form { margin: 0; width: 100%; }
         .ab-footer .btn { width: 100%; }
         .ab-row {
@@ -46,12 +34,10 @@ INDEX_TEMPLATE = """
 {% endblock %}
 
 {% block content %}
-    <div class="ab-header">
-        <div>
-            <h2>Auto Backup</h2>
-            <p>Scheduled &amp; manual backups of your pwnagotchi</p>
-        </div>
-        <a href="/plugins" class="btn secondary">Plugins</a>
+    <div class="plugin-page-header">
+        <div class="header-nav"><a href="/plugins" class="btn ghost">← Plugins</a><span class="header-version">v2.3</span></div>
+        <h2>Auto Backup</h2>
+        <p>Scheduled &amp; manual backups of your pwnagotchi</p>
     </div>
 
     <div class="card">
@@ -76,6 +62,8 @@ INDEX_TEMPLATE = """
             <div class="ab-row"><span class="k">Include paths</span><span class="v">{{ include }}</span></div>
         </div>
     </div>
+
+    <div class="plugin-footer">Built by <a href="https://github.com/wpa-2" target="_blank" rel="noopener">WPA2</a></div>
 {% endblock %}
 """
 
