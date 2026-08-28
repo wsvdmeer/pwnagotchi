@@ -63,7 +63,7 @@ INDEX_TEMPLATE = """
         </div>
     </div>
 
-    <div class="plugin-footer">Built by <a href="https://github.com/wpa-2" target="_blank" rel="noopener">WPA2</a></div>
+    <div class="plugin-footer">Built by <a href="https://github.com/wpa-2" target="_blank" rel="noopener">WPA2</a> &middot; UI by <a href="https://github.com/wsvdmeer" target="_blank" rel="noopener">wsvdmeer</a></div>
 {% endblock %}
 """
 
